@@ -21,6 +21,7 @@ describe('usemin', function () {
       grunt.file.write('build/images/test.23012.png', 'foo');
       grunt.file.write('build/images/bar.23012.png', 'foo');
       grunt.file.write('build/images/misc/test.2a436.png', 'foo');
+      grunt.file.write('build/images/misc/absolute.2a436.png', 'foo');
       grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
       grunt.log.muted = true;
@@ -37,6 +38,7 @@ describe('usemin', function () {
       assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+      assert.ok(changed.match(/<img src="~\/images\/misc\/absolute\.2a436\.png">/));
 
     });
 
@@ -48,6 +50,7 @@ describe('usemin', function () {
       grunt.file.write('foo/images/test.23012.png', 'foo');
       grunt.file.write('foo/images/bar.23012.png', 'foo');
       grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.write('foo/images/misc/absolute.2a436.png', 'foo');
       grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
       grunt.log.muted = true;
@@ -66,6 +69,7 @@ describe('usemin', function () {
       assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+      assert.ok(changed.match(/<img src="~\/images\/misc\/absolute\.2a436\.png">/));
 
     });
 
@@ -77,9 +81,11 @@ describe('usemin', function () {
       grunt.file.write('foo/images/test.23012.png', 'foo');
       grunt.file.write('foo/images/bar.23012.png', 'foo');
       grunt.file.write('foo/images/misc/test.2a436.png', 'foo');
+      grunt.file.write('foo/images/misc/absolute.2a436.png', 'foo');
       grunt.file.mkdir('bar');
       grunt.file.mkdir('bar/scripts');
       grunt.file.write('bar/scripts/plugins.12345.js', 'bar');
+      grunt.file.write('bar/scripts/absolute.12345.js', 'bar');
       grunt.file.write('bar/scripts/amd-app.6789.js', 'bar');
       grunt.file.copy(path.join(__dirname, 'fixtures/htmlprocessor_absolute.html'), 'build/index.html');
 
@@ -99,7 +105,9 @@ describe('usemin', function () {
       assert.ok(changed.match(/<img src="\/images\/test\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/\/images\/bar\.23012\.png">/));
       assert.ok(changed.match(/<img src="\/images\/misc\/test\.2a436\.png">/));
+      assert.ok(changed.match(/<img src="~\/images\/misc\/absolute\.2a436\.png">/));
       assert.ok(changed.match(/<script src="\/scripts\/plugins\.12345\.js">/));
+      assert.ok(changed.match(/<script src="~\/scripts\/absolute\.12345\.js">/));
     });
 
   });
@@ -202,6 +210,7 @@ describe('usemin', function () {
     grunt.file.mkdir('images');
     grunt.file.mkdir('images/misc');
     grunt.file.write('images/test.23012.png', 'foo');
+    grunt.file.write('images/absolute.23012.png', 'foo');
     grunt.file.write('images/misc/test.2a436.png', 'foo');
     grunt.log.muted = true;
     grunt.config.init();
@@ -219,6 +228,7 @@ describe('usemin', function () {
     assert.ok(changed.match(/url\(\"images\/misc\/test\.2a436\.png\"/));
     assert.ok(changed.match(/url\(\"\/\/images\/test\.23012\.png\"/));
     assert.ok(changed.match(/url\(\"\/images\/test\.23012\.png\"/));
+    assert.ok(changed.match(/url\(\"~\/images\/absolute\.23012\.png\"/));
   });
 
   it('should not replace reference to file not revved', function () {
@@ -431,7 +441,7 @@ describe('useminPrepare', function () {
       var concat = grunt.config('concat');
       assert.ok(concat);
       assert.ok(concat.generated);
-      assert.equal(concat.generated.files.length, 1);
+      assert.equal(concat.generated.files.length, 2);
       var files = concat.generated.files[0];
 
       assert.equal(files.dest, path.normalize('.tmp/concat/scripts/foo.js'));
@@ -439,7 +449,7 @@ describe('useminPrepare', function () {
       assert.equal(files.src[0], path.normalize('foo/scripts/bar.js'));
 
       var uglify = grunt.config('uglify');
-      assert.equal(uglify.generated.files.length, 1);
+      assert.equal(uglify.generated.files.length, 2);
       files = uglify.generated.files[0];
       assert.equal(files.dest, path.normalize('dist/scripts/foo.js'));
     });

@@ -1,6 +1,7 @@
 .myclass {
-  background: url("images/test.png") no-repeat center center;
-  background: url("images/misc/test.png") no-repeat center center;
-  background: url("//images/test.png") no-repeat center center;
-  background: url("/images/test.png") no-repeat center center;
+    background: url("images/test.png") no-repeat center center;
+    background: url("images/misc/test.png") no-repeat center center;
+    background: url("//images/test.png") no-repeat center center;
+    background: url("/images/test.png") no-repeat center center;
+    background: url("~/images/absolute.png") no-repeat center center;
 }
