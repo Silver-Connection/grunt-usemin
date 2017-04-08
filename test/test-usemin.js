@@ -442,16 +442,26 @@ describe('useminPrepare', function () {
       assert.ok(concat);
       assert.ok(concat.generated);
       assert.equal(concat.generated.files.length, 2);
-      var files = concat.generated.files[0];
 
+      var files = concat.generated.files[0];
       assert.equal(files.dest, path.normalize('.tmp/concat/scripts/foo.js'));
       assert.equal(files.src.length, 2);
       assert.equal(files.src[0], path.normalize('foo/scripts/bar.js'));
+
+      // Tilde
+      files = concat.generated.files[1];
+      assert.equal(files.dest, path.normalize('.tmp/concat/scripts/absolute.js'));
+      assert.equal(files.src.length, 2);
+      assert.equal(files.src[0], path.normalize('foo/scripts/bar.js'));
+      assert.equal(files.src[1], path.normalize('foo/scripts/baz.js'));
 
       var uglify = grunt.config('uglify');
       assert.equal(uglify.generated.files.length, 2);
       files = uglify.generated.files[0];
       assert.equal(files.dest, path.normalize('dist/scripts/foo.js'));
+
+      files = uglify.generated.files[1];
+      assert.equal(files.dest, path.normalize('dist/scripts/absolute.js'));
     });
   });
 
